@@ -3,20 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {EmployeeModule} from './employee/employee.module'
+import {AuthModule} from './auth/auth.module'
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(/* {
-      "type": "mysql",
-      "host": "localhost",
-      "port": 3306,
-      "username": "root",
-      "password": "root",
-      "database": "nest-app",
-      "entities": [],
-      "synchronize": true
-    } */),
-    EmployeeModule
+    TypeOrmModule.forRoot(),
+    EmployeeModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

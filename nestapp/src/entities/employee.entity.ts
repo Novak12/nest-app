@@ -9,6 +9,9 @@ export class Employee {
     name: string
 
     @Column()
+    password: string
+
+    @Column()
     age: number
 
     @Column()

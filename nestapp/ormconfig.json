@@ -6,5 +6,10 @@
     "password": "root",
     "database": "nest-app",
     "entities": ["src/**/**.entity{.ts,.js}"],
-    "synchronize": true
+    "synchronize": true,
+    "pool":{
+      "max":100,
+      "min":0,
+      "idleTimeoutMillis":30000
+    }
   }
