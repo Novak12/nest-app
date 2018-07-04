@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common'
-import { EmployeeService } from '../employee/employee.service'
+import { Repository } from 'typeorm';
 import { JwtPayload } from './jwt-payload.interface'
 import * as jwt from 'jsonwebtoken';
 import { Employee } from '../entities/employee.entity'
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly employeeService: EmployeeService) { }
+    user: Employee
+    constructor(
+        @InjectRepository(Employee)
+        private readonly employeeRepository: Repository<Employee>) { }
 
     async createToken(userName: string, passwoerd: string): Promise<any> {
         const user: JwtPayload = { userNmae: userName, passwoerd: passwoerd }
@@ -14,18 +18,23 @@ export class AuthService {
     }
 
     async validateUser(token: string): Promise<any> {
-        return this.employeeService.findOne(token);
+        console.log(token)
+        return this.employeeRepository.findOne({ name: token });
     }
 
     async findEmployeeByName(name: string): Promise<Employee> {
-        return this.employeeService.findOne(name);
+        return this.employeeRepository.findOne({ name: name });
+    }
+
+    getUser(): Employee {
+        return this.user;
     }
 
     async login(name: string, password: string): Promise<any> {
-        let user = await this.employeeService.findOne(name);
-        if (user != undefined && user.password == password) {
-            return this.createToken(user.name, user.password);
-        }else{
+        this.user = await this.employeeRepository.findOne({ name: name });
+        if (this.user != undefined && this.user.password == password) {
+            return this.createToken(this.user.name, this.user.password);
+        } else {
             return 'login failed !'
         }
     }
