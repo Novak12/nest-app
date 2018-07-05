@@ -1,6 +1,5 @@
 import { Controller, Get, Param, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Employee } from '../entities/employee.entity'
 import { AuthGuard } from '@nestjs/passport';
 import { callback } from './jwt.strategy'
 
@@ -10,6 +9,7 @@ export class AuthController {
     @Get('login')
     @HttpCode(HttpStatus.OK)
     async login(@Param() params): Promise<any> {
+        /* return this.authService.login(params.name, params.password); */
         return this.authService.login('novak', '202cb962ac59075b964b07152d234b70');
     }
 

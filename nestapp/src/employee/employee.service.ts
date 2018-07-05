@@ -8,7 +8,7 @@ import * as crypto from 'crypto-js'
 @Injectable()
 export class EmployeeService {
 
-    constructor( @InjectRepository(Employee)
+    constructor(@InjectRepository(Employee)
     private readonly employeeRepository: Repository<Employee>) { }
     root(): string {
         return 'Hello World!';
@@ -41,10 +41,12 @@ export class EmployeeService {
     //可以在事务中指定隔离级别
     async edit(): Promise<string> {
         let employee = await this.employeeRepository.findOne({ name: "novak" });
-        if (!employee) {
+        if (employee) {
             return getManager().transaction(async transactionalEntityManager => {
-                await transactionalEntityManager.update<Employee>('age', '123', { age: 25 });
-                await transactionalEntityManager.delete<Company>('company', { name: "wuhan" });
+                await transactionalEntityManager.update<Employee>(Employee, { name: 'novak' }, { age: 23 });
+                await transactionalEntityManager.delete<Company>(Company, { id: 10 });
+                let a = '123bew';
+                console.log(a[10].length);//制造异常
             }).then(res => {
                 return 'tranction done'
             }).catch(Error => {
@@ -57,23 +59,24 @@ export class EmployeeService {
 
     async editUseQueryRunner(): Promise<string> {
         let employee = await this.employeeRepository.findOne({ name: "novak" });
-        if (!employee) {
+        console.log(employee)
+        if (employee) {
             const connection = getConnection();
             const queryRunner = connection.createQueryRunner();
             await queryRunner.connect();
-            employee.age=22;
 
             await queryRunner.startTransaction();
-            try{
-                await queryRunner.manager.update<Employee>('age', '123', { age: 25 });
-                await queryRunner.manager.delete<Company>('company', { name: "wuhan" });  
-                await queryRunner.commitTransaction();   
-                return 'transaction done'           
-            }catch(err){
+            try {
+                await queryRunner.manager.update<Employee>(Employee, { name: 'novak' }, { age: 24 });
+                /* let a = '123bew';
+                console.log(a[10].length); */
+                await queryRunner.commitTransaction();
+                return 'transaction done'
+            } catch (err) {
                 await queryRunner.rollbackTransaction();
                 return 'transaction failed'
             }
-        }else{
+        } else {
             return 'employee not found'
         }
     }

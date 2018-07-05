@@ -8,7 +8,6 @@ export class EmployeeController {
 
     @Get()
     root():string{
-        console.log(123)
         return this.employeeService.root();
     }
 

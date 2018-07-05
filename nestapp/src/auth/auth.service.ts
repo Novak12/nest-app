@@ -17,9 +17,8 @@ export class AuthService {
         return jwt.sign(user, 'secretKey', { expiresIn: 3600 });
     }
 
-    async validateUser(token: string): Promise<any> {
-        console.log(token)
-        return this.employeeRepository.findOne({ name: token });
+    async validateUser(name: string): Promise<any> {
+        return this.employeeRepository.findOne({ name: name });
     }
 
     async findEmployeeByName(name: string): Promise<Employee> {
