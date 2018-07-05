@@ -20,7 +20,16 @@ export class EmployeeController {
 
     @Get('create')
     async create():Promise<string>{
-        console.log('1323')
         return this.employeeService.create();
+    }
+
+    @Get('edit')
+    async edit():Promise<any>{
+         return this.employeeService.edit();
+    }
+
+    @Get('edit2')
+    async edit2():Promise<any>{
+        return this.employeeService.editUseQueryRunner();
     }
 }
