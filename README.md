@@ -9,4 +9,4 @@ nest是一款优秀的node.js框架，本项目是一个学习Demo,使用nest+ty
 知识点
 ---
 1.nest.js框架的使用<br/>
-2.typeorm的基本使用：是数据库连接，CURD，事务管理
+2.typeorm的基本使用：数据库连接，CURD，事务管理
